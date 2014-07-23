@@ -1,8 +1,22 @@
 var app = angular.module('twitterClone');
 
-app.controller('mainCtrl', function($scope, parseService){
+app.controller('mainCtrl', function($scope, parseService, $http){
   //In your controller you'll have a getParseData function and a postData function, but should be placed on $scope.
+  $scope.getParseData = function(){
+    parseService.getData().then(function(results){
+      $scope.messages = results
+    });
+  };
 
+    $scope.postData = function(){
+    parseService.postData($scope.message).then(function(data){
+      $scope.getParseData();
+    })
+  };
+
+  setInterval(function(){
+    $scope.getParseData();
+  }, 1000)
   //The getParseData function will call the getData method on the parseService object. You'll then save the result of that request to 
   //your controllers $scope as messages ($scope.messages)
 

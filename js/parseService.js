@@ -9,6 +9,18 @@ app.service('parseService', function($http, $q){
   //Also, remember that $http returns a promise. So if you return the whole $http call (return $http(...)), you can then use .then in your controller.
   
   //postData method here
+  this.postData = function(message){
+    //do an $http request to add a message to our parse backend
+    var url = 'https://api.parse.com' + '/1/classes/chat';
+      return $http({
+      'method': 'post',
+      'data':{text: message},
+      url: url
+    }).then(function(httpResult){
+      return httpResult.data;
+    })
+  }
+
 
 
   //On the line below create a getData method. This method will retrieve data from the parse backend.
@@ -26,4 +38,13 @@ app.service('parseService', function($http, $q){
   */
 
   //getData method here
+  this.getData = function(){
+    return $http({
+      'method': 'get',
+      'url' : 'https://api.parse.com/1/classes/chat?order=-createdAt'
+    }).then(function(res){
+      return res.data.results
+    })
+  }
+
 });
